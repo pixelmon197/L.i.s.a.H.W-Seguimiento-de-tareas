@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050c0b">
+  <meta name="description" content="PWA para registrar tareas con ubicación y consultarlas sin conexión.">
+  <title>L.i.s.a.H.W · Tareas</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/favicon-64.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <img src="icons/icon-192.png" alt="Logo L.i.s.a.H.W" width="44" height="44">
+      <div><h1>L.i.s.a.H.W</h1><small>Seguimiento de tareas</small></div>
+    </div>
+    <div class="status" aria-live="polite">
+      <span id="conn" class="badge badge-off">Comprobando…</span>
+      <span id="pendingSync" class="badge badge-warn" hidden></span>
+      <button id="btnNotif" class="btn btn-small" type="button">Activar avisos</button>
+      <button id="btnInstall" class="btn btn-small" type="button" hidden>Instalar app</button>
+    </div>
+  </header>
+
+  <main>
+    <div id="banner" class="banner" role="status" hidden></div>
+
+    <section class="card" aria-labelledby="formTitle">
+      <h2 id="formTitle">Nueva tarea</h2>
+      <form id="taskForm" autocomplete="off">
+        <label>Título *
+          <input id="title" name="title" type="text" maxlength="120" required placeholder="Ej. Entregar reporte de prácticas">
+        </label>
+
+        <label>Descripción
+          <textarea id="description" name="description" rows="3" maxlength="1000" placeholder="Detalles de la actividad"></textarea>
+        </label>
+
+        <div class="row">
+          <label>Fecha límite *
+            <input id="dueDate" name="dueDate" type="datetime-local" required>
+          </label>
+          <label>Estado
+            <select id="status" name="status">
+              <option value="pendiente">Pendiente</option>
+              <option value="en_progreso">En progreso</option>
+              <option value="completada">Completada</option>
+            </select>
+          </label>
+        </div>
+
+        <label>Lugar (opcional)
+          <input id="place" name="place" type="text" maxlength="120" placeholder="Ej. Biblioteca central">
+        </label>
+
+        <fieldset class="geo">
+          <legend>Ubicación</legend>
+          <p class="hint">Se solicita permiso solo cuando pulsas el botón. Puedes guardar la tarea sin ubicación.</p>
+          <div class="row-actions">
+            <button id="btnGeo" class="btn btn-secondary" type="button">Usar mi ubicación</button>
+            <button id="btnGeoClear" class="btn btn-ghost" type="button" hidden>Quitar ubicación</button>
+          </div>
+          <p id="geoInfo" class="geo-info" aria-live="polite">Sin ubicación registrada.</p>
+        </fieldset>
+
+        <div class="row-actions">
+          <button id="btnSave" class="btn" type="submit">Guardar tarea</button>
+          <button id="btnCancel" class="btn btn-ghost" type="button" hidden>Cancelar edición</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="card" aria-labelledby="listTitle">
+      <div class="list-head">
+        <h2 id="listTitle">Listado de tareas</h2>
+        <label class="inline">Mostrar
+          <select id="filter">
+            <option value="todas">Todas</option>
+            <option value="pendientes">Pendientes</option>
+            <option value="completada">Completadas</option>
+          </select>
+        </label>
+      </div>
+      <ul id="list" class="task-list"></ul>
+      <p id="empty" class="empty" hidden>Aún no hay tareas. Registra la primera con el formulario.</p>
+    </section>
+  </main>
+
+  <dialog id="detail" aria-labelledby="detailTitle">
+    <article>
+      <h3 id="detailTitle"></h3>
+      <dl id="detailBody"></dl>
+      <form method="dialog"><button class="btn" type="submit">Cerrar</button></form>
+    </article>
+  </dialog>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
